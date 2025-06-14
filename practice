@@ -49,3 +49,20 @@ gra :-
 wynik(X,X):- write('remis'),nl.
 wynik(X,Y):- wygrywa(X,Y), write('WYGRALES'),nl.
 wynik(X,Y):- wygrywa(Y,X), write('PRZEGRALES'),nl.
+
+
+
+slowa([kot, pies, biega, gra, szybko, cicho, po, w, domu, parku]).
+losowe_slowa(_, 0, []) :- !.
+losowe_slowa(Lista, N, [W|Reszta]) :-
+    random_member(W, Lista),
+    N1 is N - 1,
+    losowe_slowa(Lista, N1, Reszta).
+
+zdanie_tekstowe(ListaSlow, Zdanie) :-
+    atomic_list_concat(ListaSlow, ' ', Zdanie).
+
+zdanie_losowe(N, Zdanie) :-
+    slowa(Slowa),
+    losowe_slowa(Slowa, N, Wybrane),
+    zdanie_tekstowe(Wybrane, Zdanie).
