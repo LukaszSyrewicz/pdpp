@@ -1,0 +1,51 @@
+rozmiar(slon, 40).
+rozmiar(czlowiek,20).
+rozmiar(pies,5).
+
+wiekszy(X, Y) :- rozmiar(X, A) , rozmiar(Y, B) , A>B.
+
+
+kwadrat(X,Y) :- Y is X*X.
+
+start_game :-
+    random_between(1,100, Number),
+    write('wybralem numer od 1 do 100 zgadnij go'),nl,
+    guess(Number).
+guess(Number):-
+    write('Podaj liczbe'),
+    read(Guess),
+    (   Guess = Number ->  write('Trafiles'),nl;
+    Guess < Number ->  write('Liczba jest za mala'),nl,
+    guess(Number);
+    Guess > Number ->  write('Liczba jest za duza'),nl,
+    guess(Number)).
+
+silnia(0,W) :- W is 1.
+silnia(N1,W1):-
+    N1>0,
+    N2 is N1-1,
+    silnia(N2,W2),
+    W1 is N1*W2.
+
+iloscel([],0).
+iloscel([_|T],N):-
+    iloscel(T,N1),
+    N is N1 + 1.
+
+wygrywa(kamien,nozyce).
+wygrywa(nozyce,papier).
+wygrywa(papier,kamien).
+
+gra :-
+    repeat,
+    write('Wybierz kamien,papier lub nozyce: '),nl,
+    read(Gracz),
+    random_member(Komp,[kamien,papier,nozyce]),
+    format('Komputer wybral: ~w~n',[Komp]),
+    wynik(Gracz,Komp),
+    write('Gramy dalej? (tak/nie): '),nl,
+    read(Odp),
+    (Odp = nie, !; fail).
+wynik(X,X):- write('remis'),nl.
+wynik(X,Y):- wygrywa(X,Y), write('WYGRALES'),nl.
+wynik(X,Y):- wygrywa(Y,X), write('PRZEGRALES'),nl.
